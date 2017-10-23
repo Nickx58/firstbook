@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 
+// load User Model
+require('./models/User');
+
 // passport config
 require('./config/passport')(passport);
 
