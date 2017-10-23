@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const passport = require('passport');
 
 // load User Model
@@ -28,9 +30,27 @@ app.get('/',(req,res) => {
     res.send('It works');
 });
 
-// Use route
+app.use(cookieParser());
+app.use(session({
+    secret : 'secret',
+    resave : false,
+    saveUninitialized : false
+}));
 
+// passport middleware
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// set global var
+app.use((req,res,next) => {
+    res.locals.user = req.user || null;
+    next();
+})
+
+// Use route
 app.use('/auth',auth);
+
 
 const port = process.env.PORT || 5000;
 
