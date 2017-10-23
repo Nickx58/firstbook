@@ -8,6 +8,17 @@ require('./config/passport')(passport);
 // load routes
 const auth = require('./routes/auth');
 
+// load keys
+const keys = require('./config/keys');
+
+// Map global promise
+mongoose.Promise = global.Promise;
+
+// Mongoose Connect
+mongoose.connect(keys.mongoURI,{
+    useMongoClient : true
+}).then(() => console.log('Mongo DB connected')).catch(err => console.log(err));
+
 const app = express();
 
 app.get('/',(req,res) => {
